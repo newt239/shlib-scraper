@@ -1,4 +1,4 @@
-module shlib-scraper
+module github.com/newt239/shlib-scraper
 
 go 1.18
 

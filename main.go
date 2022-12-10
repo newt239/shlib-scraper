@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/newt239/shlib-scraper/retrieve"
 )
 
 type MyEvent struct {
@@ -19,5 +19,5 @@ func HandleRequest(ctx context.Context, name MyEvent) (string, error) {
 
 func main() {
 	log.Printf("lambda started!")
-	lambda.Start(HandleRequest)
+	retrieve.Retrieve()
 }
