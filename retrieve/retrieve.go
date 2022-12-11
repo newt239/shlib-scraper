@@ -17,7 +17,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func Retrieve() {
+func Retrieve(lastBid int, limit int) {
 	godotenv.Load(".env")
 	user_id := os.Getenv("USER_ID")
 	password := os.Getenv("PASSWORD")
@@ -61,7 +61,7 @@ func Retrieve() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	for i := 1; i < 5; i++ {
+	for i := lastBid + 1; i <= lastBid+limit; i++ {
 		var title, author, publish, year, localCount, reserveCount, status, isbn string
 		url := "https://sakaehigashi-lib.com/Library/search/SearchShow.aspx?bid=" + strconv.Itoa(i)
 		err := chromedp.Run(ctx,
@@ -118,7 +118,7 @@ func Retrieve() {
 				Title:        title,
 				Author:       author,
 				Publisher:    publish,
-				Pubdate:      year,
+				Pubdate:      longerStr(year, "0"),
 				Isbn:         "original",
 				Status:       status,
 				LocalCount:   localCountInt,
@@ -153,7 +153,7 @@ func Retrieve() {
 			log.Fatal(err)
 		}
 		input = &dynamodb.PutItemInput{
-			TableName: aws.String("shlib_bookwords"),
+			TableName: aws.String("shlib_words"),
 			Item:      inputAV,
 		}
 		_, err = db.PutItem(input)
@@ -167,8 +167,16 @@ func Retrieve() {
 
 func longerStr(t1 string, t2 string) string {
 	if len(t1) >= len(t2) {
-		return t1
+		if len(t1) >= 1 {
+			return t1
+		} else {
+			return "1"
+		}
 	} else {
-		return t2
+		if len(t2) >= 1 {
+			return t2
+		} else {
+			return "1"
+		}
 	}
 }

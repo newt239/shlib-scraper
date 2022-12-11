@@ -19,5 +19,9 @@ func HandleRequest(ctx context.Context, name MyEvent) (string, error) {
 
 func main() {
 	log.Printf("lambda started!")
-	retrieve.Retrieve()
+	lastBid, err := retrieve.GetLastBid()
+	if err != nil {
+		log.Fatal(err)
+	}
+	retrieve.Retrieve(lastBid, 5)
 }

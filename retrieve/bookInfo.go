@@ -41,7 +41,6 @@ func getFromOpenBD(isbn string) (BookInfo, OpenBDResponse, error) {
 		return info, nil, err
 	}
 	info = BookInfo{
-		Name:        "book",
 		Title:       data[0].Summary.Title,
 		Author:      data[0].Summary.Author,
 		Publisher:   data[0].Summary.Publisher,
@@ -75,7 +74,6 @@ func getFromNDLApiApi(isbn string) (BookInfo, error) {
 		return info, err
 	}
 	info = BookInfo{
-		Name:      "book",
 		Title:     data.Records.Record[0].RecordData.Dc.Title,
 		Author:    data.Records.Record[0].RecordData.Dc.Creator,
 		Publisher: data.Records.Record[0].RecordData.Dc.Publisher,

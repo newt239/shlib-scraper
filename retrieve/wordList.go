@@ -26,6 +26,7 @@ func getWordList(book Book, openbd OpenBDResponse) ([]string, error) {
 			openbd[0].Hanmoto.Kaisetsu105W,
 		)
 	}
+	var wordList []string
 	word := strings.ReplaceAll(strings.Join(query, " "), "\n", "")
 	req, err := http.NewRequest(
 		"POST",
@@ -38,10 +39,12 @@ func getWordList(book Book, openbd OpenBDResponse) ([]string, error) {
 				"q" : "`+word+`"
 			}
 		}`)))
+	if err != nil {
+		return wordList, err
+	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", "Yahoo AppID: "+os.Getenv("YAHOO_APP_ID"))
 	client := new(http.Client)
-	var wordList []string
 	res, err := client.Do(req)
 	if err != nil {
 		return wordList, err
